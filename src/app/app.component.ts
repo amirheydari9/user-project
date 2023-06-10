@@ -107,4 +107,50 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
     })
   }
+
+  handleDisableUsers() {
+
+  }
+
+  handleEnableUsers() {
+
+  }
+
+  handleDeleteUsers() {
+    Swal.fire({
+      position: 'center',
+      title: 'Are you sure?',
+      text: 'This process is irreversible.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, go ahead.',
+      cancelButtonText: 'No, let me think'
+    }).then((result) => {
+      if (result.value) {
+        let data = []
+
+        this.selection.selected.forEach(item => {
+          this.dataSource.data.forEach(value => {
+            if (item.email !== value.email) {
+              data.push(value)
+            }
+          })
+        })
+        console.log(data)
+        // this.usersData = data
+        // this.dataSource.data = data
+        Swal.fire(
+          'Removed!',
+          'Item removed successfully.',
+          'success'
+        )
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'Item is safe.)',
+          'error'
+        )
+      }
+    })
+  }
 }

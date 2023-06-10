@@ -2,6 +2,23 @@
 
 <div class="mat-elevation-z8">
 
+  <button mat-raised-button color="primary" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" [disabled]="selection.isEmpty()">
+    <mat-icon>more_vert</mat-icon>
+    operation
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item  (click)="handleDisableUsers()">
+      <span>disable users</span>
+    </button>
+    <button mat-menu-item (click)="handleEnableUsers()">
+      <span>enable users</span>
+    </button>
+    <button mat-menu-item (click)="handleDeleteUsers()">
+      <span>delete users</span>
+    </button>
+  </mat-menu>
+
+
   <table mat-table [dataSource]="dataSource">
 
     <!-- Checkbox Column -->
@@ -62,3 +79,4 @@
                  aria-label="Select page of periodic elements"></mat-paginator>
 
 </div>
+

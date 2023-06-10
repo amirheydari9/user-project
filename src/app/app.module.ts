@@ -11,23 +11,29 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatDialogModule} from "@angular/material/dialog";
 import {ReactiveFormsModule} from "@angular/forms";
 import {TextInputModule} from "./ui-kit/text-input/text-input.component";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatButtonModule} from "@angular/material/button";
+import {MatMenuModule} from "@angular/material/menu";
 
 @NgModule({
   declarations: [
     AppComponent
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        ReactiveFormsModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatCheckboxModule,
-        MatIconModule,
-        MatTooltipModule,
-        MatDialogModule,
-        TextInputModule
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatDialogModule,
+    TextInputModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatMenuModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
