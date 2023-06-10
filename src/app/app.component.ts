@@ -1,57 +1,54 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {SelectionModel} from "@angular/cdk/collections";
 import {UserInterface} from "./model/user.interface";
-import {AccessLevel} from "./constant/enum";
 import {MatDialog} from "@angular/material/dialog";
 import {EditUserDialogComponent} from "./component/dialog/edit-user-dialog/edit-user-dialog.component";
+import {usersData} from "./data/users";
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+import {FormBuilder, FormControl} from "@angular/forms";
+import {Subscription} from "rxjs";
 
-const ELEMENT_DATA: UserInterface[] = [
-  {createdAt: 'Hydrogen', email: 'H', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Helium', email: 'He', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Lithium', email: 'Li', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Beryllium', email: 'Be', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Boron', email: 'B', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Carbon', email: 'C', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Nitrogen', email: 'N', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Oxygen', email: 'O', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Fluorine', email: 'F', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Neon', email: 'Ne', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Sodium', email: 'Na', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Magnesium', email: 'Mg', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Aluminum', email: 'Al', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Silicon', email: 'Si', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Phosphorus', email: 'P', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Sulfur', email: 'S', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Chlorine', email: 'Cl', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Argon', email: 'Ar', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Potassium', email: 'K', isActive: true, accessLevel: AccessLevel.ADMIN},
-  {createdAt: 'Calcium', email: 'Ca', isActive: true, accessLevel: AccessLevel.ADMIN},
-];
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements OnInit, AfterViewInit {
+
   title = 'user-project';
+  usersData = usersData
+  searchControl: FormControl
+  subscription: Subscription
 
   displayedColumns: string[] = ['select', 'email', 'createdAt', 'isActive', 'accessLevel', 'action'];
-  dataSource = new MatTableDataSource<UserInterface>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<UserInterface>(this.usersData);
   selection = new SelectionModel<UserInterface>(true, []);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
   constructor(
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private fb: FormBuilder
   ) {
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+
+  ngOnInit() {
+    this.searchControl = this.fb.control(null)
+    this.subscription = this.searchControl.valueChanges.subscribe(data => {
+      const emailFiltered = this.usersData.filter(item =>
+        item.email.toLocaleLowerCase().includes(data.toLocaleLowerCase()))
+      const accessLevel = this.usersData.filter(item =>
+        item.accessLevel.toLocaleLowerCase().includes(data.toLocaleLowerCase()))
+      this.dataSource.data = [...new Set([...emailFiltered, ...accessLevel])];
+    })
   }
 
   isAllSelected() {
@@ -76,13 +73,38 @@ export class AppComponent implements AfterViewInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.email + 1}`;
   }
 
-  handleEditUser() {
+  handleEditUser(element) {
 
     this.dialog.open(EditUserDialogComponent)
 
   }
 
-  handleDeleteUser() {
-
+  handleDeleteUser(element) {
+    Swal.fire({
+      position: 'center',
+      title: 'Are you sure?',
+      text: 'This process is irreversible.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, go ahead.',
+      cancelButtonText: 'No, let me think'
+    }).then((result) => {
+      if (result.value) {
+        const data = this.usersData.filter(item => item.email !== element.email)
+        this.usersData = data
+        this.dataSource.data = data
+        Swal.fire(
+          'Removed!',
+          'Item removed successfully.',
+          'success'
+        )
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'Item is safe.)',
+          'error'
+        )
+      }
+    })
   }
 }
