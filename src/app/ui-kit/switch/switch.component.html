@@ -1,0 +1,6 @@
+<mat-slide-toggle
+  (change)="onChanged($event)"
+  (blur)="touched()"
+  [(ngModel)]="value"
+>{{label}}</mat-slide-toggle>
+<app-field-errors [formField]="control"></app-field-errors>

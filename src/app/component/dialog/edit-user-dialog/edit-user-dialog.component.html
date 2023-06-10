@@ -1,0 +1,5 @@
+<form [formGroup]="editUserForm">
+  <app-text-input label="email" formControlName="email"></app-text-input>
+  <app-switch label="isActive" formControlName="isActive"></app-switch>
+  <app-date-picker label="createdAt" formControlName="createdAt" [max]="maxDate"></app-date-picker>
+</form>

@@ -1,0 +1,7 @@
+<ng-container *ngIf="shouldShowErrors()">
+  <div class="d-flex align-items-center mt-1" *ngFor="let error of listOfErrors();let i = index">
+    <ng-container *ngIf="i===0">
+      <mat-error>{{error}}</mat-error>
+    </ng-container>
+  </div>
+</ng-container>

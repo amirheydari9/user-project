@@ -1,8 +1,8 @@
-import {AccessLevel, UserStatus} from "../constant/enum";
+import {AccessLevel} from "../constant/enum";
 
 export interface UserInterface {
   createdAt: string;
   email: string;
-  status: UserStatus;
+  isActive: boolean;
   accessLevel: AccessLevel;
 }
