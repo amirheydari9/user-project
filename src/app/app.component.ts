@@ -8,7 +8,7 @@ import {EditUserDialogComponent} from "./component/dialog/edit-user-dialog/edit-
 import {usersData} from "./data/users";
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import {FormBuilder, FormControl} from "@angular/forms";
-import {first, Subscription} from "rxjs";
+import {elementAt, first, Subscription} from "rxjs";
 import {AddUsersDialogComponent} from "./component/dialog/add-users-dialog/add-users-dialog.component";
 import {UUID} from 'uuid-generator-ts';
 
@@ -25,7 +25,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   searchControl: FormControl
   subscription: Subscription
 
-  displayedColumns: string[] = ['select', 'email', 'createdAt', 'isActive', 'accessLevel', 'action'];
+  displayedColumns: string[] = ['select', 'email', 'isActive', 'accessLevel', 'createdAt', 'action'];
   dataSource = new MatTableDataSource<UserInterface>(this.usersData);
   selection = new SelectionModel<UserInterface>(true, []);
 
@@ -45,11 +45,15 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.searchControl = this.fb.control(null)
     this.subscription = this.searchControl.valueChanges.subscribe(data => {
-      const emailFiltered = this.usersData.filter(item =>
-        item.email.toLocaleLowerCase().includes(data.toLocaleLowerCase()))
-      const accessLevel = this.usersData.filter(item =>
-        item.accessLevel.toLocaleLowerCase().includes(data.toLocaleLowerCase()))
-      this.dataSource.data = [...new Set([...emailFiltered, ...accessLevel])];
+      if (data) {
+        const emailFiltered = this.usersData.filter(item =>
+          item.email.toLocaleLowerCase().includes(data.toLocaleLowerCase()))
+        const accessLevel = this.usersData.filter(item =>
+          item.accessLevel.toLocaleLowerCase().includes(data.toLocaleLowerCase()))
+        this.dataSource.data = [...new Set([...emailFiltered, ...accessLevel])];
+      } else {
+        this.dataSource.data = this.usersData
+      }
     })
   }
 
@@ -111,27 +115,48 @@ export class AppComponent implements OnInit, AfterViewInit {
         const data = this.usersData.filter(item => item.email !== element.email)
         this.usersData = data
         this.dataSource.data = data
-        Swal.fire(
-          'Removed!',
-          'Item removed successfully.',
-          'success'
-        )
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Cancelled',
-          'Item is safe.)',
-          'error'
-        )
+        Swal.fire('DONE')
       }
     })
   }
 
   handleDisableUsers() {
-
+    Swal.fire({
+      position: 'center',
+      title: 'Are you sure?',
+      text: 'This process is irreversible.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, go ahead.',
+      cancelButtonText: 'No, let me think'
+    }).then((result) => {
+      if (result.value) {
+        this.selection.selected.map(item => {
+          if (item.isActive) item.isActive = false
+        })
+        this.selection.clear()
+        Swal.fire('DONE')
+      }
+    })
   }
 
   handleEnableUsers() {
-
+    Swal.fire({
+      position: 'center',
+      title: 'Are you sure?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, go ahead.',
+      cancelButtonText: 'No, let me think'
+    }).then((result) => {
+      if (result.value) {
+        this.selection.selected.map(item => {
+          if (!item.isActive) item.isActive = true
+        })
+        this.selection.clear()
+        Swal.fire('DONE')
+      }
+    })
   }
 
   handleDeleteUsers() {
@@ -145,29 +170,14 @@ export class AppComponent implements OnInit, AfterViewInit {
       cancelButtonText: 'No, let me think'
     }).then((result) => {
       if (result.value) {
-        let data = []
-
+        let users: UserInterface[] = []
         this.selection.selected.forEach(item => {
-          this.dataSource.data.forEach(value => {
-            if (item.email !== value.email) {
-              data.push(value)
-            }
-          })
+          users = this.usersData.filter(val => val.email !== item.email)
+          this.usersData = users
         })
-        console.log(data)
-        // this.usersData = data
-        // this.dataSource.data = data
-        Swal.fire(
-          'Removed!',
-          'Item removed successfully.',
-          'success'
-        )
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Cancelled',
-          'Item is safe.)',
-          'error'
-        )
+        this.dataSource.data = users
+        this.selection.clear()
+        Swal.fire('DONE')
       }
     })
   }
