@@ -15,6 +15,7 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
 import {MatMenuModule} from "@angular/material/menu";
 import {EditUserDialogModule} from "./component/dialog/edit-user-dialog/edit-user-dialog.component";
+import {AddUsersDialogModule} from "./component/dialog/add-users-dialog/add-users-dialog.component";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {EditUserDialogModule} from "./component/dialog/edit-user-dialog/edit-use
     MatToolbarModule,
     MatButtonModule,
     MatMenuModule,
-    EditUserDialogModule
+    EditUserDialogModule,
+    AddUsersDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

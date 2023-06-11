@@ -9,6 +9,8 @@ import {usersData} from "./data/users";
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import {FormBuilder, FormControl} from "@angular/forms";
 import {first, Subscription} from "rxjs";
+import {AddUsersDialogComponent} from "./component/dialog/add-users-dialog/add-users-dialog.component";
+import {UUID} from 'uuid-generator-ts';
 
 
 @Component({
@@ -171,6 +173,37 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   handleAddUsers() {
+    const dialog = this.dialog.open(AddUsersDialogComponent, {
+      width: '350px',
+      height: 'auto',
+      disableClose: true
+    })
+    dialog.afterClosed().pipe(first()).subscribe(data => {
+      if (data) {
+        data.forEach(item => {
+          const row = {
+            id: new UUID().toString(),
+            createdAt: this.formatDate(),
+            ...item
+          }
+          this.usersData = [row, ...this.usersData]
+        })
+        this.dataSource.data = this.usersData
+      }
+    })
+  }
 
+  formatDate() {
+    let d = new Date(),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+
+    return [year, month, day].join('-');
   }
 }
