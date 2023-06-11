@@ -1,23 +1,32 @@
-<app-text-input [formControl]="searchControl" label="search in email and accessLevel"></app-text-input>
+<div style="width: 75vw">
 
-<div class="mat-elevation-z8">
+  <div class="d-flex align-items-center justify-content-between">
 
-  <button mat-raised-button color="primary" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" [disabled]="selection.isEmpty()">
-    <mat-icon>more_vert</mat-icon>
-    operation
-  </button>
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item  (click)="handleDisableUsers()">
-      <span>disable users</span>
-    </button>
-    <button mat-menu-item (click)="handleEnableUsers()">
-      <span>enable users</span>
-    </button>
-    <button mat-menu-item (click)="handleDeleteUsers()">
-      <span>delete users</span>
-    </button>
-  </mat-menu>
+    <div class="d-flex flex-grow-1 w-100">
+      <app-text-input [ngStyle]="{'width':'95%'}" [formControl]="searchControl"
+                      label="search in email and accessLevel"></app-text-input>
+    </div>
 
+    <button mat-raised-button color="primary" [matMenuTriggerFor]="menu" [disabled]="selection.isEmpty()">
+      actions
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="handleDisableUsers()">
+        <span>disable users</span>
+      </button>
+      <button mat-menu-item (click)="handleEnableUsers()">
+        <span>enable users</span>
+      </button>
+      <button mat-menu-item (click)="handleDeleteUsers()">
+        <span>delete users</span>
+      </button>
+    </mat-menu>
+
+    <button mat-raised-button color="accent" (click)="handleAddUsers()" class="ms-2">
+      add users
+    </button>
+
+  </div>
 
   <table mat-table [dataSource]="dataSource">
 
@@ -39,28 +48,24 @@
       </td>
     </ng-container>
 
-    <!-- Position Column -->
-    <ng-container matColumnDef="createdAt">
-      <th mat-header-cell *matHeaderCellDef>createdAt</th>
-      <td mat-cell *matCellDef="let element"> {{element.createdAt}} </td>
-    </ng-container>
-
-    <!-- Name Column -->
     <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef> Name</th>
+      <th mat-header-cell *matHeaderCellDef> email</th>
       <td mat-cell *matCellDef="let element"> {{element.email}} </td>
     </ng-container>
 
-    <!-- Weight Column -->
     <ng-container matColumnDef="isActive">
-      <th mat-header-cell *matHeaderCellDef> Weight</th>
+      <th mat-header-cell *matHeaderCellDef> isActive</th>
       <td mat-cell *matCellDef="let element"> {{element.isActive}} </td>
     </ng-container>
 
-    <!-- Symbol Column -->
     <ng-container matColumnDef="accessLevel">
-      <th mat-header-cell *matHeaderCellDef> Symbol</th>
+      <th mat-header-cell *matHeaderCellDef> accessLevel</th>
       <td mat-cell *matCellDef="let element"> {{element.accessLevel}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="createdAt">
+      <th mat-header-cell *matHeaderCellDef>createdAt</th>
+      <td mat-cell *matCellDef="let element"> {{element.createdAt}} </td>
     </ng-container>
 
     <ng-container matColumnDef="action">
@@ -73,10 +78,17 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell text-center" [attr.colspan]="displayedColumns.length">
+        No data matching found
+      </td>
+    </tr>
+
+
   </table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-                 aria-label="Select page of periodic elements"></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 
 </div>
 
