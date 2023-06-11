@@ -1,5 +1,30 @@
-<form [formGroup]="editUserForm">
-  <app-text-input label="email" formControlName="email"></app-text-input>
-  <app-switch label="isActive" formControlName="isActive"></app-switch>
-  <app-date-picker label="createdAt" formControlName="createdAt" [max]="maxDate"></app-date-picker>
-</form>
+<h1 mat-dialog-title>edit user</h1>
+<div mat-dialog-content>
+  <form [formGroup]="editUserForm">
+    <div class="mb-2">
+      <app-text-input label="email" formControlName="email"></app-text-input>
+    </div>
+    <div class="mb-3">
+      <app-switch label="isActive" formControlName="isActive"></app-switch>
+    </div>
+    <div class="mb-3">
+      <app-date-picker label="cratedAt" formControlName="createdAt"></app-date-picker>
+    </div>
+    <div class="d-flex flex-column">
+      <label class="mb-2">Pick your access level</label>
+      <mat-radio-group formControlName="accessLevel">
+        <div class="d-flex justify-content-between">
+          <mat-radio-button [value]="AccessLevel.ADMIN">ADMIN</mat-radio-button>
+          <mat-radio-button [value]="AccessLevel.CONSULTANT">CONSULTANT</mat-radio-button>
+        </div>
+      </mat-radio-group>
+    </div>
+
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="handleCloseDialog()">No Thanks</button>
+  <button mat-raised-button color="primary" [disabled]="editUserForm.invalid"
+          (click)="handleCloseDialog(editUserForm.value)" cdkFocusInitial>Ok
+  </button>
+</div>

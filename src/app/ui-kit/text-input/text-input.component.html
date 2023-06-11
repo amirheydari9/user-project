@@ -1,4 +1,4 @@
-<mat-form-field class="example-form-field">
+<mat-form-field class="w-100">
   <mat-label>{{label}}</mat-label>
   <input
     #input
@@ -9,7 +9,7 @@
     (input)="onChanged($event)"
     (blur)="touched()"
     [(ngModel)]="value">
-  <button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+  <button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="reset()">
     <mat-icon color="warn">close</mat-icon>
   </button>
 </mat-form-field>

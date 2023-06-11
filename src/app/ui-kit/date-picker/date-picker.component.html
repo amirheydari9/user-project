@@ -1,15 +1,21 @@
-<mat-form-field>
-  <mat-label>{{label}}</mat-label>
-  <input
-    matInput
-    readonly
-    [matDatepicker]="picker"
-    [max]="maxDate"
-    (dateChange)="onChanged($event)"
-    (blur)="touched()"
-    [(ngModel)]="value"
-  >
-  <mat-hint>MM/DD/YYYY</mat-hint>
-  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+<mat-form-field class="w-100">
+  <div class="d-flex">
+    <div>
+      <mat-label>{{label}}</mat-label>
+      <input
+        matInput
+        readonly
+        [errorStateMatcher]="errorMatcher()"
+        [matDatepicker]="picker"
+        [max]="maxDate"
+        (dateChange)="onChanged($event)"
+        (blur)="touched()"
+        [(ngModel)]="value"
+      >
+    </div>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  </div>
+
   <mat-datepicker #picker></mat-datepicker>
 </mat-form-field>
+

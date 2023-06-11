@@ -14,10 +14,9 @@ export class FieldErrorsComponent {
   public formField: FormControl;
 
   public readonly errorMessages = {
-    required: () => 'این فیلد اجباری است',
-    email: () => 'ایمیل معتبر نمی باشد',
-    minlength: (params) => `حداقل ${params.requiredLength} کارکتر وارد نمایید`,
-    maxlength: (params) => `حداکثر ${params.requiredLength} کارکتر وارد نمایید`,
+    required: () => 'required',
+    email: () => 'email is not valid',
+    whitespace: (params) => params.message,
   };
 
   shouldShowErrors(): boolean {

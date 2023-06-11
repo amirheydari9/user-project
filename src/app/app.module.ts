@@ -14,6 +14,7 @@ import {TextInputModule} from "./ui-kit/text-input/text-input.component";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
 import {MatMenuModule} from "@angular/material/menu";
+import {EditUserDialogModule} from "./component/dialog/edit-user-dialog/edit-user-dialog.component";
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {MatMenuModule} from "@angular/material/menu";
     TextInputModule,
     MatToolbarModule,
     MatButtonModule,
-    MatMenuModule
+    MatMenuModule,
+    EditUserDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

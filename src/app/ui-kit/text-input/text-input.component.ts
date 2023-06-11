@@ -1,6 +1,17 @@
-import {Component, ElementRef, Input, NgModule, OnInit, Renderer2, Self, ViewChild} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  forwardRef,
+  Injector,
+  Input,
+  NgModule,
+  OnInit,
+  Renderer2,
+  Self,
+  ViewChild
+} from '@angular/core';
 import {BaseControlValueAccessor} from "../../utils/BaseControlValueAccessor";
-import {FormControl, FormsModule, NgControl, Validators} from "@angular/forms";
+import {FormControl, FormsModule, NG_VALUE_ACCESSOR, NgControl, Validators} from "@angular/forms";
 import {CustomValidators} from "../../utils/Custom-Validators";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
@@ -13,7 +24,7 @@ import {TouchedErrorStateMatcher} from "../../utils/TouchedErrorStateMatcher";
 @Component({
   selector: 'app-text-input',
   templateUrl: './text-input.component.html',
-  styleUrls: ['./text-input.component.scss']
+  styleUrls: ['./text-input.component.scss'],
 })
 export class TextInputComponent extends BaseControlValueAccessor<string> implements OnInit {
 
@@ -26,17 +37,19 @@ export class TextInputComponent extends BaseControlValueAccessor<string> impleme
 
   constructor(
     @Self() private controlDirective: NgControl,
-    private renderer: Renderer2
+    private renderer: Renderer2,
   ) {
     super()
     controlDirective.valueAccessor = this;
   }
 
   ngOnInit(): void {
-    this.control = this.controlDirective.control as FormControl
-    if (this.control.hasValidator(Validators.required)) {
-      this.control.addValidators(CustomValidators.noWhitespace)
-    }
+    setTimeout(() => {
+      this.control = this.controlDirective.control as FormControl;
+      if (this.control.hasValidator(Validators.required)) {
+        this.control.addValidators(CustomValidators.noWhitespace)
+      }
+    })
   }
 
   errorMatcher() {
@@ -51,6 +64,7 @@ export class TextInputComponent extends BaseControlValueAccessor<string> impleme
   reset(): void {
     this.renderer.setProperty(this.input.nativeElement, 'value', null);
     this.changed(null);
+    this.writeValue(null);
   }
 
 }

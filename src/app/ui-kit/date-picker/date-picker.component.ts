@@ -4,10 +4,10 @@ import {FormControl, FormsModule, NgControl} from "@angular/forms";
 import {TouchedErrorStateMatcher} from "../../utils/TouchedErrorStateMatcher";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatDatepickerInputEvent, MatDatepickerModule} from "@angular/material/datepicker";
-import {MatNativeDateModule} from "@angular/material/core";
 import {MatInputModule} from "@angular/material/input";
 import * as _moment from 'moment';
 import {MatIconModule} from "@angular/material/icon";
+import {MatNativeDateModule} from "@angular/material/core";
 
 const moment = _moment;
 
@@ -41,10 +41,12 @@ export class DatePickerComponent extends BaseControlValueAccessor<string> implem
   }
 
   ngOnInit(): void {
-    this.control = this.controlDirective.control as FormControl
-    if (this.value) {
-      this.changed(moment(this.value).format('YYYY-MM-DD'));
-    }
+    setTimeout(() => {
+      this.control = this.controlDirective.control as FormControl
+      if (this.value) {
+        this.changed(moment(this.value).format('YYYY-MM-DD'));
+      }
+    })
   }
 
   errorMatcher() {
@@ -68,10 +70,10 @@ export class DatePickerComponent extends BaseControlValueAccessor<string> implem
   imports: [
     MatFormFieldModule,
     MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
     MatIconModule,
-    FormsModule
+    FormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   exports: [DatePickerComponent]
 })

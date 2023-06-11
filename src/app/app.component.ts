@@ -8,7 +8,7 @@ import {EditUserDialogComponent} from "./component/dialog/edit-user-dialog/edit-
 import {usersData} from "./data/users";
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import {FormBuilder, FormControl} from "@angular/forms";
-import {Subscription} from "rxjs";
+import {first, Subscription} from "rxjs";
 
 
 @Component({
@@ -75,7 +75,23 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   handleEditUser(element) {
 
-    this.dialog.open(EditUserDialogComponent)
+    const dialog = this.dialog.open(EditUserDialogComponent, {
+      disableClose: true,
+      data: element,
+      width: '350px'
+    })
+
+    dialog.afterClosed().pipe(first()).subscribe(data => {
+      if (data) {
+        this.usersData = this.usersData.map(item => {
+          if (item.id === element.id) {
+            item = data
+          }
+          return item
+        })
+        this.dataSource.data = this.usersData
+      }
+    })
 
   }
 
