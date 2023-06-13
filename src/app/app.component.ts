@@ -112,9 +112,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       cancelButtonText: 'No, let me think'
     }).then((result) => {
       if (result.value) {
-        const data = this.usersData.filter(item => item.email !== element.email)
-        this.usersData = data
-        this.dataSource.data = data
+        this.usersData = this.usersData.filter(item => item.email !== element.email)
+        this.dataSource.data = this.usersData
         Swal.fire('DONE')
       }
     })
@@ -172,7 +171,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       if (result.value) {
         let users: UserInterface[] = []
         this.selection.selected.forEach(item => {
-          users = this.usersData.filter(val => val.email !== item.email)
+          users = this.usersData.filter(val => val.id !== item.id)
           this.usersData = users
         })
         this.dataSource.data = users
