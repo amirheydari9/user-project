@@ -18,7 +18,6 @@ import {EditUserDialogModule} from "./component/dialog/edit-user-dialog/edit-use
 import {AddUsersDialogModule} from "./component/dialog/add-users-dialog/add-users-dialog.component";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatDatepickerModule} from "@angular/material/datepicker";
-import {DateRangePickerModule} from "./ui-kit/date-range-picker/date-range-picker.component";
 
 @NgModule({
   declarations: [
@@ -42,7 +41,6 @@ import {DateRangePickerModule} from "./ui-kit/date-range-picker/date-range-picke
     AddUsersDialogModule,
     MatFormFieldModule,
     MatDatepickerModule,
-    DateRangePickerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

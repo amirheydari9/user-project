@@ -1,0 +1,8 @@
+<div class="d-flex flex-column">
+  <label class="mb-2">{{label}}</label>
+  <mat-radio-group [(ngModel)]="value"  (change)="handleChange($event)">
+    <div class="d-flex justify-content-between flex-wrap">
+      <mat-radio-button *ngFor="let option of options" [value]="option.value">{{option.name}}</mat-radio-button>
+    </div>
+  </mat-radio-group>
+</div>

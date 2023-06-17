@@ -8,6 +8,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {AccessLevel} from "../../../constant/enum";
 import {CommonModule} from "@angular/common";
 import {MatDividerModule} from "@angular/material/divider";
+import {RadioGroupModule} from "../../../ui-kit/radio-group/radio-group.component";
 
 @Component({
   selector: 'app-add-users-dialog',
@@ -18,6 +19,10 @@ export class AddUsersDialogComponent implements OnInit {
 
   addUsersForm: FormGroup
   counter: number = 1
+  options = [
+    {name: 'ADMIN', value: AccessLevel.ADMIN},
+    {name: 'CONSULTANT', value: AccessLevel.CONSULTANT},
+  ]
 
   constructor(
     private fb: FormBuilder,
@@ -77,7 +82,8 @@ export class AddUsersDialogComponent implements OnInit {
     TextInputModule,
     MatButtonModule,
     CommonModule,
-    MatDividerModule
+    MatDividerModule,
+    RadioGroupModule
   ],
   exports: [AddUsersDialogComponent]
 })
