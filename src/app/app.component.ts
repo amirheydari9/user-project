@@ -7,7 +7,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {EditUserDialogComponent} from "./component/dialog/edit-user-dialog/edit-user-dialog.component";
 import {usersData} from "./data/users";
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-import {FormBuilder, FormControl} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {elementAt, first, Subscription} from "rxjs";
 import {AddUsersDialogComponent} from "./component/dialog/add-users-dialog/add-users-dialog.component";
 import {UUID} from 'uuid-generator-ts';
@@ -23,6 +23,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   title = 'user-project';
   usersData = usersData
   searchControl: FormControl
+  dateRangePicker: FormGroup
   subscription: Subscription
 
   displayedColumns: string[] = ['select', 'email', 'isActive', 'accessLevel', 'createdAt', 'action'];
@@ -44,6 +45,20 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.searchControl = this.fb.control(null)
+    this.dateRangePicker = this.fb.group({
+      start: this.fb.control(null),
+      end: this.fb.control(null),
+    })
+
+    this.dateRangePicker.valueChanges.subscribe(data => {
+      if (data.end) {
+        const start = data.start.getTime();
+        const end = data.end.getTime();
+        this.usersData = this.usersData.filter(item => item.createdAt > start && item.createdAt < end)
+        this.dataSource.data = this.usersData
+      }
+    })
+
     this.subscription = this.searchControl.valueChanges.subscribe(data => {
       if (data) {
         const emailFiltered = this.usersData.filter(item =>
