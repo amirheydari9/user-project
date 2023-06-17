@@ -37,7 +37,7 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="handleCloseDialog()">No Thanks</button>
-  <button mat-raised-button color="primary" [disabled]="addUsersForm.invalid" (click)="handleCloseDialog(users.value)"
+  <button mat-raised-button color="primary" [disabled]="isBtnDisabled" (click)="handleCloseDialog(users.value)"
           cdkFocusInitial>Ok
   </button>
 </div>

@@ -24,6 +24,8 @@ export class AddUsersDialogComponent implements OnInit {
     {name: 'CONSULTANT', value: AccessLevel.CONSULTANT},
   ]
 
+  isBtnDisabled: boolean = true
+
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<AddUsersDialogComponent>,
@@ -33,6 +35,11 @@ export class AddUsersDialogComponent implements OnInit {
   ngOnInit(): void {
     this.addUsersForm = this.fb.group({
       users: this.fb.array([this.createUser()], [Validators.required])
+    })
+    this.users.valueChanges.subscribe(data => {
+      if (this.isValid()) {
+        this.isBtnDisabled = false
+      }
     })
   }
 
@@ -49,15 +56,15 @@ export class AddUsersDialogComponent implements OnInit {
   }
 
   addUser() {
+    if (this.isValid()) {
+      this.isBtnDisabled = false
+    }
     if (this.counter < 20) {
       this.counter++
       this.users.push(this.createUser())
     }
   }
 
-  get AccessLevel(): typeof AccessLevel {
-    return AccessLevel
-  }
 
   handleCloseDialog(data?: any) {
     this.dialogRef.close(data)
@@ -70,6 +77,15 @@ export class AddUsersDialogComponent implements OnInit {
       this.users.removeAt(i)
     }
   }
+
+  isValid() {
+    let isValid = false
+    this.users.controls.some(item => {
+      if (item.valid) isValid = true
+    })
+    return isValid
+  }
+
 }
 
 @NgModule({
