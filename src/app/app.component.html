@@ -26,19 +26,9 @@
       add users
     </button>
 
-    <mat-form-field class="example-form-field">
-      <mat-label>First campaign</mat-label>
-      <mat-date-range-input
-        [formGroup]="dateRangePicker"
-        [rangePicker]="picker">
-        <input matStartDate placeholder="Start date" formControlName="start">
-        <input matEndDate placeholder="End date" formControlName="end">
-      </mat-date-range-input>
-      <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
-
+    <form [formGroup]="form">
+      <app-date-range-picker formControlName="dateRange" label="Select a date range"></app-date-range-picker>
+    </form>
 
   </div>
 

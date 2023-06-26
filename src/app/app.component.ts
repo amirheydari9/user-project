@@ -8,7 +8,7 @@ import {EditUserDialogComponent} from "./component/dialog/edit-user-dialog/edit-
 import {usersData} from "./data/users";
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {elementAt, first, Subscription} from "rxjs";
+import {first, Subscription} from "rxjs";
 import {AddUsersDialogComponent} from "./component/dialog/add-users-dialog/add-users-dialog.component";
 import {UUID} from 'uuid-generator-ts';
 
@@ -23,8 +23,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   title = 'user-project';
   usersData = usersData
   searchControl: FormControl
-  dateRangePicker: FormGroup
   subscription: Subscription
+  form: FormGroup;
 
   displayedColumns: string[] = ['select', 'email', 'isActive', 'accessLevel', 'createdAt', 'action'];
   dataSource = new MatTableDataSource<UserInterface>(this.usersData);
@@ -45,12 +45,11 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.searchControl = this.fb.control(null)
-    this.dateRangePicker = this.fb.group({
-      start: this.fb.control(null),
-      end: this.fb.control(null),
-    })
+    this.form = this.fb.group({
+      dateRange: {start: new Date(), end: new Date()}
+    });
 
-    this.dateRangePicker.valueChanges.subscribe(data => {
+    this.form.controls['dateRange'].valueChanges.subscribe(data => {
       if (data.end) {
         const start = data.start.getTime();
         const end = data.end.getTime();
